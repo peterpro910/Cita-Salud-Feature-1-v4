@@ -1,0 +1,925 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ==================== VARIABLES Y RESET ==================== */
+:root {
+    --color-text: #0f172a;
+    --color-background: #fff;
+    --color-primary: #3b82f6;
+    --color-primary-dark: #1e40af;
+    --color-primary-light: #dbeafe;
+    --color-error: #ef4444;
+    --color-success: #10b981;
+    --color-info: #0ea5e9;
+    --border-radius: 16px;
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ==================== BODY Y FONDO ==================== */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, rgba(224, 242, 254, 0.6) 0%, rgba(240, 249, 255, 0.6) 50%, rgba(255, 255, 255, 0.6) 100%),
+                url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1920') center/cover no-repeat fixed;
+    color: var(--color-text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Overlay decorativo más transparente */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.06) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==================== CONTENEDOR DE LOGIN ==================== */
+.login-container {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(20px);
+    padding: 3rem 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+    border: 2px solid #e0f2fe;
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    z-index: 1;
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== TÍTULO ==================== */
+h1 {
+    text-align: center;
+    background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    letter-spacing: -0.5px;
+}
+
+/* ==================== GRUPOS DE INPUT ==================== */
+.input-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 0.95rem;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    min-height: 52px;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid #e0f2fe;
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--color-text);
+    background: var(--color-background);
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+}
+
+input[type="password"] {
+    padding-right: 3.25rem;
+}
+
+input[type="text"]:hover,
+input[type="password"]:hover {
+    border-color: #bfdbfe;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background: #f8fafc;
+}
+
+input[type="text"]:disabled,
+input[type="password"]:disabled {
+    background: #f1f5f9;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* ==================== GRUPO DE CONTRASEÑA ==================== */
+.password-group {
+    position: relative;
+    display: block;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.875rem;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1rem;
+    color: #f59e0b;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.password-toggle:hover {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.2);
+    color: #d97706;
+}
+
+.password-toggle:focus {
+    outline: 2px solid #f59e0b;
+    outline-offset: 2px;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.password-toggle:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* ==================== BOTONES ==================== */
+.btn {
+    display: inline-block;
+    width: 100%;
+    min-width: 44px;
+    min-height: 52px;
+    padding: 0.875rem 1.5rem;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--transition);
+    font-family: 'Inter', sans-serif;
+    margin-top: 1rem;
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: var(--color-background);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn.primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn.primary:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.btn.primary:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.btn.secondary {
+    background: #64748b;
+    color: var(--color-background);
+    box-shadow: 0 4px 12px rgba(100, 116, 139, 0.3);
+}
+
+.btn.secondary:hover:not(:disabled) {
+    background: #475569;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(100, 116, 139, 0.4);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==================== MENSAJES ==================== */
+.message-container {
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.message-container.hidden {
+    display: none;
+}
+
+.message-container.error {
+    background: linear-gradient(135deg, #fee2e2 0%, #fef2f2 100%);
+    color: #991b1b;
+    border: 2px solid var(--color-error);
+}
+
+.message-container.success {
+    background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+    color: #065f46;
+    border: 2px solid var(--color-success);
+}
+
+.message-container.info {
+    background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+    color: var(--color-primary-dark);
+    border: 2px solid var(--color-info);
+}
+
+/* ==================== ENLACES ==================== */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: var(--transition);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+    background: var(--color-primary-light);
+}
+
+a:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* ==================== MODALES ==================== */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal.hidden {
+    display: none;
+}
+
+/* En la sección de MODALES, reemplaza desde .modal-content hasta antes de .close-button */
+
+.modal-content {
+    background: var(--color-background);
+    padding: 2.5rem;
+    border: 2px solid #e0f2fe;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.2);
+    animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-content h2 {
+    background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.5px;
+}
+
+.modal-content p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    color: var(--color-text);
+}
+
+.modal-content label {
+    margin-top: 1.25rem;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.close-button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    min-width: 44px;
+    min-height: 44px;
+    background: #fef2f2;
+    border: 2px solid #fecaca;
+    border-radius: 12px;
+    color: #dc2626;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.close-button:hover,
+.close-button:focus {
+    background: #fee2e2;
+    border-color: var(--color-error);
+    transform: scale(1.1);
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.button-group .btn {
+    width: 50%;
+    margin-top: 0;
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+/* Pantallas extra grandes (4K, Ultra Wide) */
+@media screen and (min-width: 2560px) {
+    .login-container {
+        max-width: 550px;
+        padding: 3.5rem 3rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    label {
+        font-size: 1.1rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 60px;
+        font-size: 1.1rem;
+        padding: 1rem 1.5rem;
+    }
+
+    .password-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+}
+
+/* Pantallas grandes (Desktop) */
+@media screen and (min-width: 1920px) and (max-width: 2559px) {
+    .login-container {
+        max-width: 500px;
+        padding: 3.25rem 2.75rem;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    label {
+        font-size: 1.05rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 56px;
+        font-size: 1.05rem;
+    }
+
+    .password-toggle {
+        width: 38px;
+        height: 38px;
+        font-size: 1.05rem;
+    }
+}
+
+/* Pantallas medianas-grandes (Laptop grande) */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+    .login-container {
+        max-width: 480px;
+        padding: 3rem 2.75rem;
+    }
+
+    h1 {
+        font-size: 2.1rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 54px;
+        font-size: 1.02rem;
+    }
+}
+
+/* Pantallas medianas (Laptop estándar) */
+@media screen and (min-width: 1024px) and (max-width: 1439px) {
+    .login-container {
+        max-width: 450px;
+        padding: 3rem 2.5rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 52px;
+        font-size: 1rem;
+    }
+}
+
+/* Tablets en horizontal */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+    body {
+        padding: 20px;
+    }
+
+    .login-container {
+        max-width: 420px;
+        padding: 2.75rem 2.25rem;
+    }
+
+    h1 {
+        font-size: 1.9rem;
+        margin-bottom: 1.9rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 51px;
+        font-size: 0.98rem;
+    }
+
+    .password-toggle {
+        width: 35px;
+        height: 35px;
+        font-size: 0.98rem;
+        right: 0.85rem;
+    }
+
+    .modal-content {
+        max-width: 480px;
+        padding: 2.25rem;
+    }
+}
+
+/* Tablets en vertical */
+@media screen and (min-width: 601px) and (max-width: 768px) {
+    body {
+        padding: 18px;
+    }
+
+    .login-container {
+        padding: 2.5rem 2rem;
+        max-width: 400px;
+        border-radius: 22px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+        margin-bottom: 1.8rem;
+    }
+
+    label {
+        font-size: 0.93rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 50px;
+        font-size: 0.95rem;
+    }
+
+    .password-toggle {
+        font-size: 0.95rem;
+        right: 0.8rem;
+        width: 34px;
+        height: 34px;
+    }
+
+    .modal-content {
+        width: 92%;
+        max-width: 450px;
+        padding: 2rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+}
+
+/* Móviles grandes */
+@media screen and (min-width: 481px) and (max-width: 600px) {
+    body {
+        padding: 15px;
+    }
+
+    .login-container {
+        padding: 2.25rem 1.75rem;
+        border-radius: 20px;
+        max-width: 380px;
+    }
+
+    h1 {
+        font-size: 1.65rem;
+        margin-bottom: 1.65rem;
+    }
+
+    .input-group {
+        margin-bottom: 1.35rem;
+    }
+
+    label {
+        font-size: 0.92rem;
+        margin-bottom: 0.65rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 49px;
+        padding: 0.8rem 1.1rem;
+        font-size: 0.93rem;
+    }
+
+    input[type="password"] {
+        padding-right: 3.1rem;
+    }
+
+    .password-toggle {
+        font-size: 0.93rem;
+        right: 0.775rem;
+        width: 33px;
+        height: 33px;
+        padding: 0.45rem;
+    }
+
+    .message-container {
+        padding: 0.9rem 1.1rem;
+        font-size: 0.93rem;
+    }
+
+    .modal-content {
+        width: 93%;
+        padding: 1.9rem 1.4rem;
+    }
+
+    a {
+        font-size: 0.93rem;
+        margin-top: 1.35rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+}
+
+/* Móviles estándar */
+@media screen and (min-width: 376px) and (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    .login-container {
+        padding: 2rem 1.5rem;
+        border-radius: 18px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+        margin-bottom: 1.25rem;
+    }
+
+    label {
+        font-size: 0.9rem;
+        margin-bottom: 0.6rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 48px;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    input[type="password"] {
+        padding-right: 3rem;
+    }
+
+    .password-toggle {
+        font-size: 0.9rem;
+        right: 0.75rem;
+        width: 32px;
+        height: 32px;
+        padding: 0.4rem;
+    }
+
+    .message-container {
+        padding: 0.875rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .modal-content {
+        width: 94%;
+        padding: 1.75rem 1.25rem;
+    }
+
+    a {
+        font-size: 0.9rem;
+        margin-top: 1.25rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+}
+
+/* Móviles pequeños */
+@media screen and (min-width: 361px) and (max-width: 375px) {
+    body {
+        padding: 10px;
+    }
+
+    .login-container {
+        padding: 1.85rem 1.35rem;
+        border-radius: 17px;
+    }
+
+    h1 {
+        font-size: 1.4rem;
+        margin-bottom: 1.4rem;
+    }
+
+    .input-group {
+        margin-bottom: 1.2rem;
+    }
+
+    label {
+        font-size: 0.88rem;
+        margin-bottom: 0.55rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 47px;
+        padding: 0.7rem 0.95rem;
+        font-size: 0.88rem;
+    }
+
+    input[type="password"] {
+        padding-right: 2.9rem;
+    }
+
+    .password-toggle {
+        font-size: 0.88rem;
+        right: 0.7rem;
+        width: 31px;
+        height: 31px;
+        padding: 0.38rem;
+    }
+
+    .message-container {
+        padding: 0.85rem 0.95rem;
+        font-size: 0.88rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.65rem 1.15rem;
+    }
+
+    a {
+        font-size: 0.88rem;
+        margin-top: 1.2rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.7rem;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+}
+
+/* Móviles muy pequeños */
+@media screen and (max-width: 360px) {
+    body {
+        padding: 8px;
+    }
+
+    .login-container {
+        padding: 1.75rem 1.25rem;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 1.35rem;
+        margin-bottom: 1.35rem;
+    }
+
+    .input-group {
+        margin-bottom: 1.15rem;
+    }
+
+    label {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    .btn {
+        min-height: 46px;
+        padding: 0.65rem 0.9rem;
+        font-size: 0.85rem;
+    }
+
+    input[type="password"] {
+        padding-right: 2.8rem;
+    }
+
+    .password-toggle {
+        font-size: 0.85rem;
+        right: 0.65rem;
+        width: 30px;
+        height: 30px;
+        padding: 0.35rem;
+    }
+
+    .message-container {
+        padding: 0.8rem 0.9rem;
+        font-size: 0.85rem;
+    }
+
+    .modal-content {
+        width: 96%;
+        padding: 1.5rem 1rem;
+    }
+
+    a {
+        font-size: 0.85rem;
+        margin-top: 1.15rem;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .button-group .btn {
+        width: 100%;
+    }
+}
+
+/* ==================== MEJORAS DE ACCESIBILIDAD ==================== */
+*:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms;
+        animation-iteration-count: 1;
+        transition-duration: 0.01ms;
+    }
+}
+
+@media (prefers-contrast: high) {
+    body {
+        background: #fff;
+    }
+    
+    .login-container {
+        border-width: 3px;
+    }
+    
+    h1 {
+        -webkit-text-fill-color: var(--color-text);
+        color: var(--color-text);
+    }
+}

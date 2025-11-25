@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Estadísticas de asistencias e inasistencias a citas médicas en CITASalud">
+    <title>Estadísticas de Asistencias - CITASalud</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="./../css/estadisticas.css?v=2">
+</head>
+
+<body>
+
+    <header>
+        <h1>
+            <i class="fa-solid fa-user-doctor" aria-hidden="true"></i>
+            Estadísticas
+        </h1>
+
+        <nav class="main-nav" aria-label="Navegación principal">
+            <ul>
+                <li><a href="agendar_cita.html"><i class="fas fa-calendar-plus" aria-hidden="true"></i> Agendar Cita</a></li>
+                <li><a href="citas.html"><i class="fas fa-calendar-times" aria-hidden="true"></i> Mis Citas</a></li>
+                <li><a href="estadisticas.html" class="active" aria-current="page"><i class="fas fa-chart-bar" aria-hidden="true"></i> Estadísticas de Asistencia</a></li>
+                <li><a href="#logout" id="logout-link"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h2 class="page-title">Estadísticas de Asistencias e Inasistencias</h2>
+
+        <div class="control-panel">
+            <label for="filtroMes" class="filter-label">Filtrar por Mes:</label>
+            <select id="filtroMes" class="form-control" aria-label="Seleccionar mes para filtrar estadísticas">
+                <option value="0" selected>Todo el Historial</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+        </div>
+
+        <section class="resumen-grid" aria-label="Resumen de citas">
+            <article class="resumen-tarjeta asistidas">
+                <div class="resumen-label">Total de citas asistidas</div>
+                <div class="resumen-valor" id="totalAsistidas" aria-live="polite">Cargando...</div>
+            </article>
+            <article class="resumen-tarjeta no-asistidas">
+                <div class="resumen-label">Total de citas no asistidas</div>
+                <div class="resumen-valor" id="totalNoAsistidas" aria-live="polite">Cargando...</div>
+            </article>
+            <article class="resumen-tarjeta cumplimiento">
+                <div class="resumen-label">Porcentaje de cumplimiento con citas</div>
+                <div class="resumen-valor" id="porcentajeCumplimiento" aria-live="polite">Cargando...</div>
+            </article>
+        </section>
+
+        <section class="estadisticas-grid" aria-label="Gráficas de estadísticas">
+            <article class="tarjeta">
+                <h3>Historial Detallado</h3>
+                <h4>Asistencias vs. Inasistencias (%)</h4>
+                <canvas id="graficoCircular" aria-label="Gráfico circular de asistencias vs inasistencias" role="img"></canvas>
+            </article>
+            
+            <article class="tarjeta">
+                <h3>Comparativa de Citas</h3>
+                <canvas id="graficoBarras" aria-label="Gráfico de barras comparativo de citas" role="img"></canvas>
+            </article>
+
+            <article class="tarjeta tarjeta-full">
+                <h3>Evolución Mensual</h3>
+                <canvas id="graficoLineas" aria-label="Gráfico de líneas de evolución mensual" role="img"></canvas>
+            </article>
+        </section>
+    </main>
+
+    <div id="notification-toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="./../js/script_general.js"></script>
+    <script src="./../js/estadisticas.js"></script>
+    <script src="./../js/notifications.js"></script>
+    <script src="./../js/session-manager.js"></script>
+
+</body>
+
+</html>

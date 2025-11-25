@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gestión de citas médicas - Ver, modificar y cancelar citas en CITASalud">
+    <title>Mis Citas Médicas - CITASalud</title>
+    <link rel="stylesheet" href="../css/citas.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+    <header>
+        <h1>
+            <i class="fa-solid fa-user-doctor" aria-hidden="true"></i>
+            Mis Citas Médicas
+        </h1>
+
+        <nav class="main-nav" aria-label="Navegación principal">
+            <ul>
+                <li><a href="agendar_cita.html"><i class="fas fa-calendar-plus" aria-hidden="true"></i> Agendar Cita</a></li>
+                <li><a href="citas.html" class="active" aria-current="page"><i class="fas fa-calendar-times" aria-hidden="true"></i> Mis Citas</a></li>
+                <li><a href="estadisticas.html"><i class="fas fa-chart-bar" aria-hidden="true"></i> Estadísticas de Asistencia</a></li>
+                <li><a href="#logout" id="logout-link"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div id="mensaje" class="mensaje" role="status" aria-live="polite"></div>
+        
+        <section class="filtros-wrapper">
+            <div class="filtros-estado-container">
+                <label for="filtro-estado" class="filter-label">Filtrar por estado:</label>
+                <select id="filtro-estado" class="filter-select" aria-label="Filtrar citas por estado"></select>
+                <button type="button" id="btn-limpiar-filtro" class="btn-accion btn-secundario">Limpiar Estado</button>
+            </div>
+
+            <div class="filtros-especialidad-container">
+                <label for="filtro-especialidad" class="filter-label">Filtrar por especialidad:</label>
+                <select id="filtro-especialidad" class="filter-select" aria-label="Filtrar citas por especialidad médica">
+                    <option value="todas">Todas las especialidades</option> 
+                </select>
+                <button type="button" id="btn-limpiar-filtro-especialidad" class="btn-accion btn-secundario">Limpiar Filtro</button>
+            </div>
+        </section>
+
+        <div id="mensaje-lista-vacia" class="mensaje-vacio" role="status" aria-live="polite"></div>
+
+        <section class="citas-grid-container" aria-label="Lista de citas médicas">
+            <div id="citas-container"></div>
+        </section>
+    </main>
+
+    <div id="modal-detalle-cita" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-detalle-title">
+        <div class="modal-content">
+            <button type="button" class="close-modal-btn" data-modal="detalle" aria-label="Cerrar ventana modal">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 id="modal-detalle-title" class="sr-only">Detalle de la cita</h2>
+            <div id="modal-info-body"></div>
+        </div>
+    </div>
+
+    <div id="modal-mensaje" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+        <div class="modal-content">
+            <h2 id="modal-titulo"></h2>
+            <p id="modal-texto"></p>
+            <div class="card-actions full-width">
+                <button type="button" id="modal-cerrar-btn" class="btn-accion btn-modificar">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-cancelacion" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-cancelacion-title">
+        <div class="modal-content">
+            <button type="button" id="btn-cerrar-cancelacion" class="close-modal-btn" aria-label="Cerrar ventana de selección de motivo">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 id="modal-cancelacion-title">
+                <i class="fas fa-user" aria-hidden="true"></i> Seleccionar Motivo de Cancelación
+            </h2>
+
+            <form id="form-motivo-cancelacion" novalidate>
+                <div class="form-group">
+                    <label for="motivo-select">
+                        <i class="fas fa-clipboard-list" aria-hidden="true"></i> Motivo de Cancelación
+                    </label>
+                    <select id="motivo-select" name="id_motivo" required aria-required="true">
+                        <option value="" disabled selected>Cargando motivos...</option>
+                    </select>
+                </div>
+
+                <div class="card-actions full-width">
+                    <button type="submit" id="btn-continuar-cancelacion" class="btn-accion btn-danger" disabled>
+                        Continuar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-resumen-cancelacion" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-resumen-title">
+        <div class="modal-content">
+            <button type="button" id="btn-cerrar-resumen-cancelacion" class="close-modal-btn" aria-label="Cerrar ventana de resumen de cancelación">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 id="modal-resumen-title">Confirmar Cancelación</h2>
+
+            <div class="resumen-cita-container">
+                <h3>Resumen de la Cita</h3>
+                <p><strong>Especialidad:</strong> <span id="resumen-especialidad"></span></p>
+                <p><strong>Fecha:</strong> <span id="resumen-fecha"></span></p>
+                <p><strong>Hora:</strong> <span id="resumen-hora"></span></p>
+                <p><strong>Profesional:</strong> <span id="resumen-profesional"></span></p>
+                <p><strong>Sede:</strong> <span id="resumen-sede"></span></p>
+                <hr>
+                <h3>Motivo y Límite</h3>
+                <p><strong>Motivo Seleccionado:</strong> <span id="resumen-motivo-seleccionado" class="motivo-resaltado"></span></p>
+                <p id="resumen-cancelaciones-mes"></p>
+            </div>
+
+            <div class="card-actions full-width">
+                <button type="button" id="btn-modificar-motivo" class="btn-accion btn-modificar" aria-label="Volver para modificar el motivo">
+                    Modificar Motivo
+                </button>
+                <button type="button" id="btn-confirmar-cancelacion" class="btn-accion btn-danger" aria-label="Confirmar la cancelación final de la cita">
+                    Confirmar Cancelación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modificationModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modModalTitle">
+        <div class="modal-content large-modal">
+            <button type="button" id="cancelModification" class="close-modal-btn" aria-label="Cerrar ventana de modificación">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 id="modModalTitle">Modificar Cita <span id="cita_id_display"></span></h2>
+
+            <form id="modificationForm" novalidate>
+                <h3>
+                    <p><strong>Especialidad:</strong> <span id="especialidad_display"></span></p>
+                </h3>
+                <input type="hidden" id="especialidad_id">
+                <input type="hidden" id="cita_id">
+                <input type="hidden" id="horario_original_id">
+                <input type="hidden" id="profesional_original_id">
+                <input type="hidden" id="sede_original_id">
+
+                <hr>
+                <h3>Seleccione Nueva Cita</h3>
+                <div class="form-group">
+                    <label for="sede">
+                        <i class="fas fa-hospital" aria-hidden="true"></i> Sede:
+                    </label>
+                    <select id="sede" name="sede" required aria-required="true">
+                        <option value="">Cargando Sedes...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="profesional">
+                        <i class="fas fa-user-md" aria-hidden="true"></i> Profesional:
+                    </label>
+                    <select id="profesional" name="profesional" required aria-required="true" disabled>
+                        <option value="">Seleccione Sede primero</option>
+                    </select>
+                    <div id="infoProfesional" class="info-profesional"></div>
+                </div>
+                <div class="form-group">
+                    <label for="fecha_horario_display">
+                        <i class="fas fa-calendar-alt" aria-hidden="true"></i> Fecha y Hora:
+                    </label>
+                    <input type="text" id="fecha_horario_display" disabled placeholder="Seleccione un profesional" aria-readonly="true">
+                    <div id="horarios-list" class="horarios-list-hidden"></div>
+                    <input type="hidden" id="horario_id">
+                </div>
+                <div id="mensaje-modificacion" class="mensaje" role="status" aria-live="polite"></div>
+                <div class="card-actions full-width margin-top">
+                    <button type="button" id="nextToConfirmation" class="btn-accion btn-primary" disabled>Continuar</button>
+                </div>
+            </form>
+
+            <div id="confirmationScreen" class="confirmation-hidden">
+                <h3>Resumen de la Modificación</h3>
+                <section aria-labelledby="datos-originales-heading">
+                    <h4 id="datos-originales-heading">Datos Originales</h4>
+                    <p><strong>Fecha/Hora:</strong> <span id="conf_original_datetime"></span></p>
+                    <p><strong>Profesional:</strong> <span id="conf_original_profesional"></span></p>
+                    <p><strong>Sede:</strong> <span id="conf_original_sede"></span></p>
+                </section>
+                <hr>
+                <section aria-labelledby="nueva-cita-heading">
+                    <h4 id="nueva-cita-heading">Nueva Cita Seleccionada</h4>
+                    <p><strong>Fecha/Hora:</strong> <span id="conf_modified_datetime" class="dato-resaltado"></span></p>
+                    <p><strong>Profesional:</strong> <span id="conf_modified_profesional" class="dato-resaltado"></span></p>
+                    <p><strong>Sede:</strong> <span id="conf_modified_sede" class="dato-resaltado"></span></p>
+                </section>
+                <div class="card-actions full-width">
+                    <button type="button" id="backToFormBtn" class="btn-accion btn-modificar">Volver a Seleccionar</button>
+                    <button type="button" id="confirmModification" class="btn-accion btn-primary">Confirmar Modificación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+    <script src="./../js/citas.js"></script>
+    <script src="./../js/cancelacion.js"></script>
+    <script src="../js/modificar_cita.js"></script>
+    <script src="./../js/script_general.js"></script>
+    <script src="./../js/notifications.js"></script>
+    <script src="../js/session-manager.js"></script>
+</body>
+
+</html>
