@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agendar citas médicas en CITASalud - Seleccione especialidad, sede, profesional y horario">
+    <title>Agendar Cita Médica - CITASalud</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="./../css/style.css?v=2">
+</head>
+
+<body>
+    <header class="main-header">
+        <h1>Agendar Cita</h1>
+        <nav class="main-nav" aria-label="Navegación principal">
+            <ul>
+                <li><a href="agendar_cita.html" class="active" aria-current="page"><i class="fas fa-calendar-plus" aria-hidden="true"></i> Agendar Cita</a></li>
+                <li><a href="citas.html"><i class="fas fa-calendar-times" aria-hidden="true"></i> Mis Citas</a></li>
+                <li><a href="estadisticas.html"><i class="fas fa-chart-bar" aria-hidden="true"></i> Estadísticas de Asistencia</a></li>
+                <li><a href="#logout" id="logout-link"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Agendar Cita Médica</h2>
+
+        <form id="cita-form" novalidate>
+            <div class="form-group">
+                <label for="especialidad">
+                    <i class="fas fa-stethoscope" aria-hidden="true"></i> Selecciona la Especialidad:
+                </label>
+                <select id="especialidad" name="especialidad" required aria-required="true" disabled>
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sede">
+                    <i class="fas fa-hospital" aria-hidden="true"></i> Selecciona la Sede:
+                </label>
+                <select id="sede" name="sede" required aria-required="true" disabled>
+                    <option value="">Selecciona primero una especialidad</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="profesional">
+                    <i class="fas fa-user-md" aria-hidden="true"></i> Selecciona el Profesional:
+                </label>
+                <select id="profesional" name="profesional" required aria-required="true" disabled>
+                    <option value="">Selecciona primero una especialidad y sede</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="horario">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i> Selecciona el Horario:
+                </label>
+                <input 
+                    type="text" 
+                    id="horario" 
+                    placeholder="Selecciona una fecha" 
+                    required 
+                    aria-required="true"
+                    disabled 
+                    aria-readonly="true">
+            </div>
+            
+            <div id="horarios-list" class="horarios-list-hidden" role="region" aria-live="polite"></div>
+            <input type="hidden" id="horario_seleccionado" name="horario">
+
+            <button type="button" id="agendar-btn" class="btn-hidden">Agendar Cita</button>
+        </form>
+
+        <div id="mensaje" class="mensaje" role="status" aria-live="polite"></div>
+
+        <section id="resumen-cita" class="resumen-hidden" aria-labelledby="resumen-title">
+            <h3 id="resumen-title">Resumen de la Cita</h3>
+            <dl class="resumen-list">
+                <dt>Paciente:</dt>
+                <dd id="resumen-paciente"></dd>
+                
+                <dt>Especialidad:</dt>
+                <dd id="resumen-especialidad"></dd>
+                
+                <dt>Profesional:</dt>
+                <dd id="resumen-profesional"></dd>
+                
+                <dt>Sede y Dirección:</dt>
+                <dd id="resumen-sede"></dd>
+                
+                <dt>Fecha y Hora:</dt>
+                <dd id="resumen-fecha-hora"></dd>
+            </dl>
+            
+            <div class="botones-accion">
+                <button type="button" id="confirmar-btn" class="btn-primary">Confirmar Cita</button>
+                <button type="button" id="regresar-btn" class="btn-secondary">Modificar</button>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-confirmacion" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-confirmacion-title">
+        <div class="modal-content">
+            <h2 id="modal-confirmacion-title">Cita confirmada</h2>
+            <p>Cita confirmada correctamente. Se envió la confirmación a su correo electrónico.</p>
+            <button type="button" id="btn-aceptar" class="btn-primary">Aceptar</button>
+        </div>
+    </div>
+
+    <div id="notification-toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <script src="./../js/agendar_cita.js"></script>
+    <script src="./../js/script_general.js"></script>
+    <script src="./../js/limpiar_agendamiento.js"></script>
+    <script src="./../js/notifications.js"></script>
+    <script src="./../js/session-manager.js"></script>
+</body>
+
+</html>

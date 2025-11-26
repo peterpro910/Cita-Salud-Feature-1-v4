@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Iniciar sesión en CITASalud - Sistema de gestión de citas médicas">
+    <title>CITASalud - Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/login.css?v=2">
+</head>
+
+<body>
+    <main class="main-content">
+        <div class="login-container">
+            <h1>Iniciar Sesión en CITASalud</h1>
+
+            <div id="message-container" class="message-container hidden" role="alert" aria-live="assertive"></div>
+
+            <form id="login-form" novalidate>
+                <div class="input-group">
+                    <label for="documento">Número de documento de identidad:</label>
+                    <input 
+                        type="text" 
+                        id="documento" 
+                        name="documento" 
+                        autocomplete="username"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        maxlength="20"
+                        required 
+                        aria-required="true" 
+                        tabindex="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña:</label>
+                    <div class="password-group">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            autocomplete="current-password"
+                            minlength="7"
+                            maxlength="16"
+                            required 
+                            aria-required="true" 
+                            tabindex="2">
+                        <button 
+                            type="button"
+                            class="password-toggle" 
+                            id="toggle-password" 
+                            aria-label="Mostrar contraseña"
+                            aria-pressed="false"
+                            tabindex="3">
+                            <span aria-hidden="true">🔒</span>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="login-button" class="btn primary" tabindex="4">Iniciar Sesión</button>
+
+                <a href="#forgot-password" id="forgot-password-link" tabindex="5">¿Olvidó su contraseña?</a>
+            </form>
+        </div>
+    </main>
+
+    <div id="forgot-password-modal" class="modal hidden" role="dialog" aria-modal="true"
+        aria-labelledby="forgot-password-title">
+        <div class="modal-content">
+            <button 
+                type="button"
+                class="close-button" 
+                id="close-forgot-modal" 
+                aria-label="Cerrar modal de recuperación de contraseña"
+                tabindex="6">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 id="forgot-password-title">Recuperar Contraseña</h2>
+            <p>Ingrese su número de documento de identidad. Le enviaremos un correo para restablecerla.</p>
+
+            <div id="forgot-message" class="message-container hidden" role="alert" aria-live="assertive"></div>
+
+            <form id="forgot-password-form" novalidate>
+                <div class="input-group">
+                    <label for="forgot-documento">Documento de identidad:</label>
+                    <input 
+                        type="text" 
+                        id="forgot-documento" 
+                        name="documento"
+                        autocomplete="username"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        maxlength="20"
+                        aria-required="true"
+                        required>
+                </div>
+                <button type="submit" class="btn primary">Enviar Correo</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="session-active-modal" class="modal hidden" role="dialog" aria-modal="true"
+        aria-labelledby="session-active-title">
+        <div class="modal-content">
+            <h2 id="session-active-title">Alerta de Sesión Activa</h2>
+            <p id="session-active-msg">Ya tiene una sesión activa en otro dispositivo. ¿Desea cerrar la sesión anterior
+                e iniciar una nueva?</p>
+            <div class="button-group">
+                <button type="button" id="force-login-button" class="btn primary">Cerrar sesión anterior e
+                    iniciar</button>
+                <button type="button" id="cancel-login-button" class="btn secondary">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="permission-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-content">
+            <button 
+                type="button"
+                class="close-button"
+                aria-label="Cerrar modal de acceso restringido">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 id="modal-title"><span aria-hidden="true">❌</span> Acceso Restringido</h2>
+            <p id="modal-message">No tiene permisos para acceder al módulo de gestión de citas. Si cree que esto es un
+                error, comuníquese con nosotros al correo <strong>notificaciones.citasalud@gmail.com</strong>.</p>
+            <button type="button" id="modal-back-button" class="btn primary">Volver al Inicio de Sesión</button>
+        </div>
+    </div>
+
+    <script src="../js/login.js"></script>
+</body>
+
+</html>
